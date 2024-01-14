@@ -3,3 +3,6 @@ vvenv
 requirements.txt
 text.txt
 db.sqlite
+
+vercel.json
+build_files.sh
