@@ -13,7 +13,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-70uequ7-#c3q#$cd_!$f*a@t&z0eo%7-f_9t04gamakp)9!^qm'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -122,7 +122,8 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
-# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
+
+STATIC_ROOT = BASE_DIR / 'staticfiles_build' / 'static'
 # End StaticFiles Configuration
 
 
