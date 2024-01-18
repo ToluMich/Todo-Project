@@ -10,14 +10,18 @@ from django.db.models import Q
 import logging
 import traceback
 import json
+import os
 
 from utilities.EmailNotification import EmailNotify
 from utilities.NewCryption import decrypt, encrypt
 from .models import List
 from django.views.decorators.csrf import csrf_exempt
+from decouple import config, AutoConfig
 
 
-base_url = 'http://127.0.0.1:8000/'
+config = AutoConfig(search_path='.env')
+
+base_url = config("CURRENT_DOMAIN")
 
 
 

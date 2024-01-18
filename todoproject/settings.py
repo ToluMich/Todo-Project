@@ -1,19 +1,18 @@
 
 from cryptography.fernet import Fernet
+from decouple import config, AutoConfig
 from pathlib import Path
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
+config = AutoConfig(search_path='.env')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-70uequ7-#c3q#$cd_!$f*a@t&z0eo%7-f_9t04gamakp)9!^qm'
-
-ENCRYPT_KEY = b'Fig0wRoM6QyoBeYDWrYIjvcfhWm6j4uOeWV-3_5YFxQ='
+SECRET_KEY = config("SECRET_KEY")
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -83,11 +82,11 @@ WSGI_APPLICATION = 'todoproject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': "railway",
-        'USER': "postgres",
-        'PASSWORD': "ea21E12fB5Ef4bfbd*fGG2aF3eBA6afA",
-        'HOST': 'viaduct.proxy.rlwy.net',
-        'PORT': '50723'
+        'NAME': config("NAME"),
+        'USER': config("USER"),
+        'PASSWORD': config("PASSWORD"),
+        'HOST': config("HOST"),
+        'PORT': config("PORT"),
     }
 }
 
