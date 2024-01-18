@@ -1,6 +1,5 @@
 venv
 vvenv
-requirements.txt
 text.txt
 db.sqlite
 
