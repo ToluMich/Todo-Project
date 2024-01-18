@@ -80,16 +80,16 @@ WSGI_APPLICATION = 'todoproject.wsgi.application'
 
 # The Postgres Database Configurations
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': "railway",
-#         'USER': "postgres",
-#         'PASSWORD': "e-BbgD6DAEf1A-3-DCEa5cd*AF5b2bb6",
-#         'HOST': 'monorail.proxy.rlwy.net',
-#         'PORT': '54560'
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': "railway",
+        'USER': "postgres",
+        'PASSWORD': "ea21E12fB5Ef4bfbd*fGG2aF3eBA6afA",
+        'HOST': 'viaduct.proxy.rlwy.net',
+        'PORT': '50723'
+    }
+}
 
 # DB_NAME = "Todo"
 # DB_USER = "postgres" 
@@ -105,12 +105,12 @@ WSGI_APPLICATION = 'todoproject.wsgi.application'
 #     }
 # }
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 
 # Password validation
