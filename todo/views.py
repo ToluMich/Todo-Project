@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout
+from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
 import logging
 import traceback
@@ -21,6 +22,7 @@ base_url = 'http://127.0.0.1:8000/'
 
 
 # Create your views here.
+@csrf_exempt
 def registration(request):
     if request.method == 'POST':
         try:
@@ -40,7 +42,7 @@ def registration(request):
             
             
 
-
+@csrf_exempt
 def sendMail(request):
     if request.method == 'POST':
         try:
@@ -70,7 +72,7 @@ def sendMail(request):
         
         
         
-        
+@csrf_exempt
 def resetPassword(request, url):
     if request.method == 'GET':
         try:
@@ -83,7 +85,7 @@ def resetPassword(request, url):
     
     
     
-    
+@csrf_exempt
 def reset(request):
     if request.method == 'POST':
         try:
@@ -104,7 +106,7 @@ def reset(request):
 
 
 
-
+@csrf_exempt
 def authentication(request):
     if request.method == 'POST':
         try:
@@ -130,7 +132,7 @@ def authentication(request):
 
 
 
-
+@csrf_exempt
 @login_required()
 def home(request):
     if request.method == 'GET':
@@ -163,7 +165,7 @@ def home(request):
             
     
 
-
+@csrf_exempt
 @login_required
 def getTodos(request):
     if request.method == 'GET':
@@ -178,7 +180,7 @@ def getTodos(request):
             
             
             
-            
+@csrf_exempt
 @login_required
 def getTodoBySearchValue(request, condition, value):
     try:
@@ -200,7 +202,7 @@ def getTodoBySearchValue(request, condition, value):
         
 
 
-
+@csrf_exempt
 @login_required
 def getCompletedTodos(request):
     if request.method == 'GET':
@@ -232,7 +234,7 @@ def getCompletedTodos(request):
 
 
 
-
+@csrf_exempt
 @login_required
 def createTodo(request):
     try:
@@ -257,7 +259,7 @@ def createTodo(request):
         
         
         
-        
+@csrf_exempt
 @login_required
 def getPendingTodosPartial(request):
     try:
@@ -277,7 +279,7 @@ def getPendingTodosPartial(request):
     
         
         
-        
+@csrf_exempt
 @login_required
 def getTodoByIdPartial(request, id):
     if request.method == 'GET':
@@ -298,7 +300,7 @@ def getTodoByIdPartial(request, id):
         
             
        
-    
+@csrf_exempt
 @login_required
 def getUpdatedTodoValues(request):
     try:
@@ -311,9 +313,8 @@ def getUpdatedTodoValues(request):
 
 
 
-
-@login_required
 @csrf_exempt
+@login_required
 def completeTodo(request):
     try:
         if request.method == 'POST':
@@ -336,7 +337,7 @@ def completeTodo(request):
         
         
 
-
+@csrf_exempt
 @login_required
 def getCompletedTodosPartial(request):
     try:
@@ -382,7 +383,7 @@ def UpdateTodoValuesToSession(request):
         
         
         
-        
+@csrf_exempt
 @login_required
 def editTodoById(request, id):
     try:
@@ -406,7 +407,7 @@ def editTodoById(request, id):
         
         
 
-
+@csrf_exempt
 @login_required
 def deleteTodoById(request, id):
     if request.method == 'DELETE':
@@ -433,7 +434,7 @@ def deleteTodoById(request, id):
 
         
         
-
+@csrf_exempt
 @login_required
 def logoutAuth(request):
     try:
