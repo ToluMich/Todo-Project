@@ -195,3 +195,77 @@ function RecoverEmail(event){
 
     
 }
+
+
+
+function recoverPassword(event){
+    event.preventDefault();
+    
+    debugger
+
+    const btn = document.querySelector("#resetBtnId");
+    btn.disabled = true
+    btn.classList.add("button--loading");
+
+    let password = $('#resetPaswwordId').val();
+    let confirmPassword = $('#confirmResetPasswordId').val();
+
+    if (password !== confirmPassword){
+        btn.disabled = false
+        btn.classList.remove("button--loading");
+        return Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "Password Mismatch!!!",
+            text: `New Password and Confirm New Password does not match`,
+            showConfirmButton: false,
+            timer: 2500
+          });
+    }
+
+    const token =  $('input[name="csrfmiddlewaretoken"]').attr('value'); 
+    let userEmail = $('#emailResetId').val();
+
+    let obj = {
+        userEmail: userEmail,
+        newPassword: password
+    }
+
+    $.ajax({
+        type: 'POST',
+        url: '/reset',
+        dataType: 'json',
+        data: JSON.stringify(obj),
+        headers: {
+            'X-CSRFToken': token 
+       },
+        success: function (result) {
+            console.log(result)
+            console.log(result.Message, typeof(result.Message))
+            console.log(result.Status, typeof(result.Status))
+
+            let icon = "success"
+            let text = `Login to Continue`
+
+            $('#resetPaswwordId').val('');
+            $('#confirmResetPasswordId').val('');
+
+            if(result.Status === "200"){
+                popUpWithoutTimer(icon, result.Message, text)
+                btn.classList.remove("button--loading");
+                btn.disabled = false
+
+                // window.location.href = '/'
+            }else{
+                popUpWithoutTimer("error", "An error Occured", result.Message)
+                btn.classList.remove("button--loading");
+                btn.disabled = false
+            }           
+        },
+        error: function(error){
+            console.log(error)
+        }
+    })
+
+    
+}

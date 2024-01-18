@@ -6,10 +6,12 @@ from django.http import JsonResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout
 from django.db.models import Q
+import logging
+import traceback
 import json
 
 from utilities.EmailNotification import EmailNotify
-from utilities.EncryptData import Encrypt
+from utilities.NewCryption import decrypt, encrypt
 from .models import List
 from django.views.decorators.csrf import csrf_exempt
 
@@ -33,7 +35,8 @@ def registration(request):
             
             return JsonResponse({"Message": "Success", "Status": "200"})
         except Exception as ex:
-            print(ex)
+            logging.getLogger("error_logger").error(traceback.format_exc())
+            return None
             
             
 
@@ -52,7 +55,7 @@ def sendMail(request):
                 return JsonResponse({"Message": "Account with this Email does not exist", "Status": "404"})
             
             subject = 'Reset Password!!!'            
-            encMessage = Encrypt(receiver)
+            encMessage = encrypt(receiver)
             url = base_url+"reset-password/"+str(encMessage)
             body = 'Reset the Password of your Acount by clicking on this link; \n'+url
             
@@ -61,21 +64,33 @@ def sendMail(request):
                 return JsonResponse({"Message": "Email sent Successlly", "Status": "200"})
             
         except Exception as ex:
-            print(ex)
+            logging.getLogger("error_logger").error(traceback.format_exc())
+            return None
         
         
         
         
         
-def reset(request, url):
+def resetPassword(request, url):
     if request.method == 'GET':
-        return render(request, 'resetPassword.html')
+        try:
+            message = decrypt(url)
+            return render(request, 'resetPassword.html', {"email": message})
+        
+        except Exception as ex:
+            logging.getLogger("error_logger").error(traceback.format_exc())
+            return None
+    
+    
+    
+    
+def reset(request):
     if request.method == 'POST':
         try:
             body = json.loads(request.body)
-            email = body['email']
-            password = body['password']
-            username = email.split('@')[0]
+            email = body['userEmail']
+            password = body['newPassword']
+            # username = email.split('@')[0]
             
             user = User.objects.filter(email = email).first()
             user.set_password(password)
@@ -83,9 +98,9 @@ def reset(request, url):
             
             return JsonResponse({"Message": "Password Reset Successul", "Status": "200"})
         except Exception as ex:
-            print(ex)
-        return redirect('authentication')
-            
+            logging.getLogger("error_logger").error(traceback.format_exc())
+            return JsonResponse({"Message": "An error ocuured while resetting Password. Try again", "Status": "500"})
+
 
 
 
@@ -108,7 +123,8 @@ def authentication(request):
             else:
                 return JsonResponse({"message": "User not Found", "status":"404"})
         except Exception as ex:
-            print(ex)
+            logging.getLogger("error_logger").error(traceback.format_exc())
+            return None
          
     return render(request, 'authentication.html')
 
@@ -142,7 +158,8 @@ def home(request):
             return render(request, 'pendingTodos.html', context)
         
         except Exception as ex:
-            print(ex)
+            logging.getLogger("error_logger").error(traceback.format_exc())
+            return None
             
     
 
@@ -156,7 +173,8 @@ def getTodos(request):
             return render(request, "_tableDetailsListPartial.html", {"todos": todoLists})
         
         except Exception as ex:
-            print(ex)
+            logging.getLogger("error_logger").error(traceback.format_exc())
+            return None
             
             
             
@@ -164,18 +182,21 @@ def getTodos(request):
 @login_required
 def getTodoBySearchValue(request, condition, value):
     try:
-        if request.method == "GET" and value is not None:
-            
+        if request.method == "GET" and value is not None:            
                 userId = request.user.id
+                
                 if condition == 'pending':
                     todoLists = List.objects.filter(Q(content__icontains=value, createdBy_id=userId, isDeleted=False,isCompleted=False) |
                                                     Q(title__icontains=value, createdBy_id=userId, isDeleted=False,isCompleted=False))[:5]
                     return render(request, "_tableDetailsListPartial.html", {"todos": todoLists})
                 elif condition == 'completed':
-                    todoLists = List.objects.filter(content__icontains=value, createdBy_id=userId, isDeleted=False,isCompleted=True)[:5]
-                    return render(request, "_tableDetailsListPartial.html", {"todos": todoLists})
+                    todoLists = List.objects.filter(Q(content__icontains=value, createdBy_id=userId, isDeleted=False,isCompleted=True) |
+                                                    Q(title__icontains=value, createdBy_id=userId, isDeleted=False,isCompleted=True))[:5]
+                    return render(request, "_completedTableDetailsListPartial.html", {"todos": todoLists})
+                
     except Exception as ex:
-        print(ex)
+        logging.getLogger("error_logger").error(traceback.format_exc())
+        return None
         
 
 
@@ -206,7 +227,8 @@ def getCompletedTodos(request):
             return render(request, 'completedTodos.html', context)
         
         except Exception as ex:
-            print(ex)
+            logging.getLogger("error_logger").error(traceback.format_exc())
+            return None
 
 
 
@@ -230,7 +252,8 @@ def createTodo(request):
             
             return redirect('pendingTodosPartial')
     except Exception as ex:
-        print(ex)
+        logging.getLogger("error_logger").error(traceback.format_exc())
+        return None
         
         
         
@@ -249,7 +272,8 @@ def getPendingTodosPartial(request):
         return render(request, '_tableDetailsListPartial.html', context)
     
     except Exception as ex:
-        print(ex)
+        logging.getLogger("error_logger").error(traceback.format_exc())
+        return None
     
         
         
@@ -268,7 +292,8 @@ def getTodoByIdPartial(request, id):
             return render(request, '_editTodoFormPartial.html', context)
         
         except Exception as ex:
-            print(ex)
+            logging.getLogger("error_logger").error(traceback.format_exc())
+            return None
         
         
             
@@ -281,7 +306,8 @@ def getUpdatedTodoValues(request):
         return JsonResponse(tvalues)
     
     except Exception as ex:
-            print(ex)
+            logging.getLogger("error_logger").error(traceback.format_exc())
+            return None
 
 
 
@@ -305,7 +331,28 @@ def completeTodo(request):
             
             return redirect('pendingTodosPartial')
     except Exception as ex:
-        print(ex)
+        logging.getLogger("error_logger").error(traceback.format_exc())
+        return None
+        
+        
+
+
+@login_required
+def getCompletedTodosPartial(request):
+    try:
+        userId = request.user.id
+        todoLists = List.objects.filter(createdBy_id=userId, isDeleted=False,isCompleted=True).order_by('-dateCompleted')[:5]
+        UpdateTodoValuesToSession(request)
+        
+        context = {
+            "todos": todoLists,
+            }
+        
+        return render(request, '_completedTableDetailsListPartial.html', context)
+    
+    except Exception as ex:
+        logging.getLogger("error_logger").error(traceback.format_exc())
+        return None
         
         
         
@@ -330,7 +377,8 @@ def UpdateTodoValuesToSession(request):
         return "Success"
     
     except Exception as ex:
-            print(ex)
+            logging.getLogger("error_logger").error(traceback.format_exc())
+            return None
         
         
         
@@ -352,7 +400,8 @@ def editTodoById(request, id):
             
             return redirect('pendingTodosPartial')
     except Exception as ex:
-        print(ex)
+        logging.getLogger("error_logger").error(traceback.format_exc())
+        return None
  
         
         
@@ -377,7 +426,8 @@ def deleteTodoById(request, id):
             return render(request, '_tableDetailsListPartial.html', context)
         
         except Exception as ex:
-            print(ex)
+            logging.getLogger("error_logger").error(traceback.format_exc())
+            return None
     
          
 
@@ -391,4 +441,5 @@ def logoutAuth(request):
         return redirect('authentication')
     
     except Exception as ex:
-            print(ex)
+            logging.getLogger("error_logger").error(traceback.format_exc())
+            return None

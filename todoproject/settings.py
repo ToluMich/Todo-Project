@@ -1,4 +1,5 @@
 
+from cryptography.fernet import Fernet
 from pathlib import Path
 import os
 
@@ -12,15 +13,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-70uequ7-#c3q#$cd_!$f*a@t&z0eo%7-f_9t04gamakp)9!^qm'
 
+ENCRYPT_KEY = b'Fig0wRoM6QyoBeYDWrYIjvcfhWm6j4uOeWV-3_5YFxQ='
+
+
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
 # Application definition
 
 INSTALLED_APPS = [
-    "whitenoise.runserver_nostatic",
+    # "whitenoise.runserver_nostatic",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -39,7 +43,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    "whitenoise.middleware.WhiteNoiseMiddleware",
+    # "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 ROOT_URLCONF = 'todoproject.urls'
@@ -63,11 +67,11 @@ TEMPLATES = [
 WSGI_APPLICATION = 'todoproject.wsgi.application'
 
 
-STORAGES = {
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    },
-}
+# STORAGES = {
+#     "staticfiles": {
+#         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+#     },
+# }
 
 
 
@@ -76,14 +80,28 @@ STORAGES = {
 
 # The Postgres Database Configurations
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': "railway",
+#         'USER': "postgres",
+#         'PASSWORD': "e-BbgD6DAEf1A-3-DCEa5cd*AF5b2bb6",
+#         'HOST': 'monorail.proxy.rlwy.net',
+#         'PORT': '54560'
+#     }
+# }
+
+DB_NAME = "Todo"
+DB_USER = "postgres" 
+DB_PASSWORD = "MichAels786"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': "railway",
-        'USER': "postgres",
-        'PASSWORD': "e-BbgD6DAEf1A-3-DCEa5cd*AF5b2bb6",
-        'HOST': 'monorail.proxy.rlwy.net',
-        'PORT': '54560'
+        'NAME': DB_NAME,
+        'USER': DB_USER,
+        'PASSWORD': DB_PASSWORD,
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
@@ -123,7 +141,7 @@ TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -133,7 +151,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
 
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+# STATIC_ROOT = BASE_DIR / 'staticfiles'
 # End StaticFiles Configuration
 
 

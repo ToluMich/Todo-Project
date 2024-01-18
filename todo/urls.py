@@ -7,7 +7,8 @@ urlpatterns = [
     path('', views.authentication, name='authentication'),
     path('register', views.registration, name='registration'),
     path('send-mail', views.sendMail, name='sendMail'),
-    path('reset-password/<str:url>/', views.reset, name='reset'),
+    path('reset-password/<str:url>/', views.resetPassword, name='reset-password'),
+    path('reset', views.reset, name='reset'),
     
     path('home/', views.home, name='home'),
     path('create', views.createTodo, name='create'),    
@@ -15,6 +16,7 @@ urlpatterns = [
     path('get/<str:id>/', views.getTodoByIdPartial, name='getTodoByIdPartial'),
     path('get/search/<str:condition>/<str:value>/', views.getTodoBySearchValue, name='getTodoBySearchValue'),
     path('completed-todos/', views.getCompletedTodos, name='completedTodos'),
+    path('completed-todos/partial/', views.getCompletedTodosPartial, name='getCompletedTodosPartial'),
     path('updated-values/', views.getUpdatedTodoValues, name='updatedTodoValues'),
     
     path('complete', views.completeTodo, name='completeTodo'),
