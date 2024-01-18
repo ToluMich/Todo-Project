@@ -17,7 +17,7 @@ ENCRYPT_KEY = b'Fig0wRoM6QyoBeYDWrYIjvcfhWm6j4uOeWV-3_5YFxQ='
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
