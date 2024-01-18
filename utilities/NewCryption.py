@@ -4,12 +4,14 @@ import logging
 import traceback
 from django.conf import settings
 
-
+key = b'qUFYBumQ6yBQnDCxxHtoIkffqRmxa1oJdQ-DW8d1gxc='
 
 def encrypt(pas: any) -> str:
     try:        
         pas = str(pas)
-        cipher_pass = Fernet(settings.ENCRYPT_KEY)
+        # ekey = base64.b64encode(settings.ENCRYPT_KEY)
+        # ekey = settings.ENCRYPT_KEY.encode("ascii")
+        cipher_pass = Fernet(key)
         encrypt_pass = cipher_pass.encrypt(pas.encode('ascii'))
         encrypt_pass = base64.urlsafe_b64encode(encrypt_pass).decode("ascii") 
         return encrypt_pass
@@ -22,7 +24,7 @@ def encrypt(pas: any) -> str:
 def decrypt(pas: str) -> any:
     try:
         pas = base64.urlsafe_b64decode(pas)
-        cipher_pass = Fernet(settings.ENCRYPT_KEY)
+        cipher_pass = Fernet(key)
         decod_pass = cipher_pass.decrypt(pas).decode("ascii")     
         return decod_pass
     except Exception as e:
