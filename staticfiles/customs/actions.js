@@ -255,7 +255,7 @@ function recoverPassword(event){
                 btn.classList.remove("button--loading");
                 btn.disabled = false
 
-                // window.location.href = '/'
+                window.location.href = '/'
             }else{
                 popUpWithoutTimer("error", "An error Occured", result.Message)
                 btn.classList.remove("button--loading");
