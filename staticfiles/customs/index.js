@@ -4,7 +4,7 @@ function showDataLoading(){
 }
 
 function showDataLoading2(){
-    let tBody = document.getElementById("completedTableId");
+    let tBody = document.getElementById("competedTodoTableId");
     tBody.innerHTML = '<h1>Loading...................</h1>'
 }
 
@@ -334,23 +334,20 @@ function DeleteTodo(event, id){
 function SearchTodo(event, condition){
     event.preventDefault();
 
-    debugger
     let searchText = $('#searchId').val();
     let completionSearchId = $('#completionSearchId').val();
     if (completionSearchId){
         condition = 'completed'
     }
 
-    // condition === 'pending' ? showDataLoading() : showDataLoading2()
+    condition === 'pending' ? showDataLoading() : showDataLoading2()
        
     $.ajax({
         type: 'GET',
         url: `/get/search/${condition}/${searchText}/`,
         dataType: 'html',
         success: function (result) {
-            debugger
-            console.log(result)
-            $('#tableId').html(result);
+            condition == 'completed' ? $('#competedTodoTableId').html(result) : $('#tableId').html(result);
         },
         error: function(error){
             console.log(error)
@@ -362,13 +359,16 @@ function SearchTodo(event, condition){
 
 function ResetData(){
     let searchText = $('#searchId').val();
+    let completionSearchId = $('#completionSearchId').val();
+
+   
     if(searchText.length == 0){
         $.ajax({
             type: 'GET',
-            url: `/pending-todos/`,
+            url: !completionSearchId ? `/pending-todos/` :  `/completed-todos/partial/`,
             dataType: 'html',
             success: function (result) {
-                $('#tableId').html(result);
+                !completionSearchId ?  $('#tableId').html(result) : $('#competedTodoTableId').html(result);
             },
             error: function(error){
                 console.log(error)

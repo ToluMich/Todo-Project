@@ -17,7 +17,7 @@ ENCRYPT_KEY = b'Fig0wRoM6QyoBeYDWrYIjvcfhWm6j4uOeWV-3_5YFxQ='
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -151,7 +151,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
 
-# STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 # End StaticFiles Configuration
 
 
