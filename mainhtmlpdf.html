@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Font Awesome -->
+<link
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+rel="stylesheet"
+/>
+<!-- Google Fonts -->
+<link
+href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+rel="stylesheet"
+/>
+<!-- MDB -->
+<link
+href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.min.css"
+rel="stylesheet"
+/>
+<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
+			integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		></script>
+    <title>Document</title>
+</head>
+<body>
+    <section>
+        <div class="card" >
+            <div class="card-header"></div>
+            <div class="card-body">
+          
+              <div class="container" id="invoice" style="margin-top: 0">
+                <div class="row">
+                  <div class="col-xl-12">
+                    <!-- <i class="far fa-building text-danger fa-6x float-start"></i> -->
+                    <img src="./logo.png" alt="" width="150" height="150">
+                  </div>
+                </div>
+          
+          
+                <div class="row mt-4">
+                  <div class="align-items-center col-xl-12" id="headId">
+                    <ul class="list-unstyled float-start">
+                        <!-- <li style="font-size: 30px; color: blue;">GraceForte Academy</li> -->
+                        <li class="text-muted"><b>To</b>: OLADOKUN TOLUWALASE</li>
+                        <li class="text-muted"><b>Email</b>: tolumail@mail.com</li>
+                        <li class="text-muted"><b>Phone No</b>: +234 904485768</li>
+                      </ul>
+          
+                    <ul class="list-unstyled float-end" >
+                        <li class="text-muted"><b>ID</b>: 90039384</li>
+                      <li class="text-muted"> <span class="me-1 fw-bold">Status:</span><span class="badge bg-success text-white fw-bold">
+                        Paid</span></li>
+                        <li class="text-muted"><b>Issued Date</b>: Todnnnnnnnnnnay</li> 
+                    </ul>
+                  </div>
+                </div>
+          
+                <div class="row text-center">
+                  <h3 class="text-uppercase text-center mt-3" style="font-size: 40px;">RECEIPT</h3>
+                  <p>123456789</p>
+                </div>
+          
+                <div class="row mx-3">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Description</th>
+                        <th scope="col">Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Samsung TV</td>
+                        <td><i class="fas fa-dollar-sign"></i> 500,00</td>
+                      </tr>
+                    
+                    </tbody>
+                  </table>
+          
+                </div>
+                <div class="row">
+                  <div class="col-xl-8">
+                    <ul class="list-unstyled float-end me-0">
+                      <li><span class="me-3 float-start">Total Amount:</span><i class="fas fa-dollar-sign"></i> 6850,00
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <hr>
+          
+                <div class="row mt-2 mb-5">
+                  <p class="fw-bold">Date: <span class="text-muted">23 June 20221</span></p>
+                  <p class="fw-bold mt-3">Signature:</p>
+                </div>
+          
+              </div>     
+          
+          
+            </div>
+            <div class="card-footer"></div>
+          </div>
+
+          <div>
+            <button onclick="generatePDF();">Print</button>
+            <!-- <button onclick="window.print()">Print</button> -->
+          </div>
+    </section>
+
+
+    <script>
+      let opts = {
+        margin: 0.5,
+        html2canvas: {scale: 2, scrollY: 0},
+        jsPDF: {unit: 'in', format: "letter", orientation: "portrait"}
+      }
+
+			function generatePDF() {
+				// Choose the element that your content will be rendered to.
+				const element = document.getElementById('invoice');
+				// Choose the element and save the PDF for your user.
+				html2pdf()
+        .set(opts)
+        .from(element).save();
+			}
+
+		</script>
+</body>
+</html>
