@@ -94,7 +94,7 @@ WSGI_APPLICATION = 'todoproject.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        default='sqlite:///db.sqlite3',
+        default='postgresql://postgres:nixHBUZMmeeklABkkFYUheHTrYtaAuZr@interchange.proxy.rlwy.net:43281/railway',
         conn_max_age=600,
         ssl_require=True
     )
