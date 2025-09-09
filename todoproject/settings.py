@@ -1,4 +1,5 @@
-
+import dj_database_url
+import os
 from cryptography.fernet import Fernet
 from decouple import config, AutoConfig
 from pathlib import Path
@@ -36,6 +37,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -79,16 +81,25 @@ WSGI_APPLICATION = 'todoproject.wsgi.application'
 
 # The Postgres Database Configurations
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': config("NAME"),
+#         'USER': config("USER"),
+#         'PASSWORD': config("PASSWORD"),
+#         'HOST': config("HOST"),
+#         'PORT': config("PORT"),
+#     }
+# }
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': config("NAME"),
-        'USER': config("USER"),
-        'PASSWORD': config("PASSWORD"),
-        'HOST': config("HOST"),
-        'PORT': config("PORT"),
-    }
+    'default': dj_database_url.config(
+        default='sqlite:///db.sqlite3',
+        conn_max_age=600,
+        ssl_require=True
+    )
 }
+
 
 # DB_NAME = "Todo"
 # DB_USER = "postgres" 
@@ -161,3 +172,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL='/'
 LOGIN_REDIRECT_URL = '/'
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
