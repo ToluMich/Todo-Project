@@ -1,8 +1,9 @@
 from datetime import datetime
+import random
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout
 from django.views.decorators.csrf import csrf_exempt
@@ -14,7 +15,7 @@ import os
 
 from utilities.EmailNotification import EmailNotify
 from utilities.NewCryption import decrypt, encrypt
-from .models import List
+from .models import ActiveLogs, List
 from django.views.decorators.csrf import csrf_exempt
 from decouple import config, AutoConfig
 
@@ -437,6 +438,20 @@ def deleteTodoById(request, id):
          
 
         
+        
+@csrf_exempt
+def active(request):
+    try:
+        names = ["Toluwalase", "Michael", "Tee Drums", "Tee Dev", "Michaels Tolu"]
+        result = ActiveLogs.objects.create(name=random.choice(names), status="200")
+        return HttpResponse("OK, Triggered Successfully")
+    
+    except Exception as ex:
+            logging.getLogger("error_logger").error(traceback.format_exc())
+            return HttpResponse("Ooopsssss, An Error OCuured this time")
+        
+
+
         
 @csrf_exempt
 @login_required

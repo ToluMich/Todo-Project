@@ -22,6 +22,8 @@ urlpatterns = [
     path('complete', views.completeTodo, name='completeTodo'),
     path('edit/<str:id>', views.editTodoById, name='editTodo'),
     path('delete/<str:id>', views.deleteTodoById, name='deleteTodo'),
+
+    path('active/', views.active, name='active'),
     
     
     path('logout/', views.logoutAuth, name='logout'),
