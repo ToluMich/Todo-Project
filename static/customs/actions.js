@@ -50,7 +50,7 @@ function authentication(event){
         success: function (result) {
             result.status === '200' 
             ?
-            window.location.href = '/home'
+            window.location.href = '/home/'
             :
             Swal.fire({
                 position: "center",
